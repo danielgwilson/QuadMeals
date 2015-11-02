@@ -196,24 +196,24 @@ def parse_query(query):
         exception_name = "Specify a day and meal! Example: 'tuesday dinner'"
         return[type, exception_name]
 
-def greeting(from_number):
-   
-    # List of known callers
-    callers = {
-     "+3038877689": "Max",
-     "+6099024326": "El Capitan Forrest",
-     "+7038957477": "Queen Isabelle The Goof",
-    }
 
-    if from_number in callers:
-    	name = callers[from_number]
-    	message = "Hi " + name + "! \n"
-    	if name == "Max":
-    		message = "Aww, are you my creator? That's so sweet! Thanks for making me! You're the coolest person ever!!!"
+
+def greeting(from_number):
+	# List of known callers
+	callers = {
+	"+3038877689": "Max",
+	"+6099024326": "El Capitan Forrest",
+	"+7038957477": "Queen Isabelle The Goof",
+	}
+
+	if from_number in callers:
+		name = callers[from_number]
+		message = "Hi " + name + "! \n"
+		if name == "Max":
+			message = "Aww, are you my creator? That's so sweet! Thanks for making me! You're the coolest person ever!!!"
 	else:
 		message = "Hi there!!! Don't tell anyone but you're my favorite member"
-    
-    return message
+	return message
 
 app = Flask(__name__)
 
