@@ -91,7 +91,7 @@ def getLaundryStatus(str):
     html = f.read()
 
     # Get BeautifulSoup Object
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, "html.parser")
 
     laundryStatus = ""
 
@@ -208,7 +208,7 @@ def getMeals(str):
     html = f.read()
 
     # Get BeautifulSoup Object
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, "html.parser")
 
     # get list and length
     foodlist = soup.find_all('div') 
@@ -411,15 +411,12 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
-    """Respond to incoming calls with a simple text message."""
- 
-    resp = twilio.twiml.Response()
 
     # get from and body
     from_number = request.values.get('From', None)
     query = request.values.get('Body', None)
     if query is None:
-    	query = ""
+    	query = "rocky"
 
     message = ""
     
@@ -437,7 +434,7 @@ def hello_monkey():
         meal = parsedArray[2].upper() #capitalized meal
         response = (meals["dhall"] + " " + meal + "\n")
         # print menu
-        response+=meals[meal]
+        # response+=meals[meal]
     elif (parsedArray[0] == "laundry"):
         laundryStatus = getLaundryStatus(parsedArray[1])
         response = (parsedArray[1] + ": ")
@@ -445,6 +442,7 @@ def hello_monkey():
     else:
        response = "error"
 
+    resp = twilio.twiml.Response()
     message+=response
     
     #handle long message case
