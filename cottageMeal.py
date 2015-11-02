@@ -388,9 +388,6 @@ def parse_query(query):
         exception_name = "Specify a dining hall and meal! Example: 'wilson dinner'"
         return[type, exception_name]
 
-app = Flask(__name__)
-
-
 def greeting(from_number):
    
     # List of known callers
@@ -410,13 +407,19 @@ def greeting(from_number):
     
     return message
 
+app = Flask(__name__)
+
 @app.route("/", methods=['GET', 'POST'])
-def send_text():
+def hello_monkey():
+    """Respond to incoming calls with a simple text message."""
+ 
     resp = twilio.twiml.Response()
 
     # get from and body
     from_number = request.values.get('From', None)
     query = request.values.get('Body', None)
+    if query is None:
+    	query = ""
 
     message = ""
     
@@ -446,16 +449,14 @@ def send_text():
     
     #handle long message case
     if len(message) > 160:
-       resp.sms("(1)\n" + message[:156])
-       resp.sms("(2)\n" + message[156:312])          
+       resp.message("(1)\n" + message[:156])
+       resp.message("(2)\n" + message[156:312])          
        if len(message) > 312:
-          resp.sms("(3)\n" + message[312:468])          
+          resp.message("(3)\n" + message[312:468])          
 
     else:
-       resp.sms(message)
- 
+       resp.message(message)
     return str(resp)
-   
  
 if __name__ == "__main__":
     app.run(debug=True)
