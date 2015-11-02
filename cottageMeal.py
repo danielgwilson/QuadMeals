@@ -203,15 +203,13 @@ def greeting(from_number):
 	"+6099024326": "El Capitan Forrest",
 	"+7038957477": "Queen Isabelle The Goof",
 	}
-	steve = ""
 
 	if from_number in callers:
-		steve = "yoo"
 		name = callers[from_number]
 		message = "Hi " + name + "! \n"
 	else:
 		message = "Hi there!!! Don't tell anyone but you're my favorite member"
-	return message + steve
+	return message
 
 app = Flask(__name__)
 
