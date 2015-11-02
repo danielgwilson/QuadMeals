@@ -207,8 +207,6 @@ def greeting(from_number):
 	if from_number in callers:
 		name = callers[from_number]
 		message = "Hi " + name + "! \n"
-		if name == "Max":
-			message = "Aww, are you my creator? That's so sweet! Thanks for making me! You're the coolest person ever!!!"
 	else:
 		message = "Hi there!!! Don't tell anyone but you're my favorite member"
 	return message + str(from_number)
