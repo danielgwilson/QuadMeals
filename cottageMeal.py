@@ -2,7 +2,7 @@ from flask import Flask, request, redirect
 import twilio.twiml
 from datetime import datetime
 import urllib
-import BeautifulSoup
+from bs4 import BeautifulSoup
 import os
 from random import choice
 
