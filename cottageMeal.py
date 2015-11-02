@@ -110,13 +110,11 @@ def parse_query(query):
        "sunday": "SUNDAY",
        "mon": "MONDAY",
        "monday": "MONDAY",
-       "tu": "TUESDAY",
        "tue": "TUESDAY",
        "tues": "TUESDAY",
        "tuesday": "Tuesday",
        "wed": "WEDNESDAY",
        "wednesday": "WEDNESDAY",
-       "th": "THURSDAY",
        "thu": "THURSDAY",
        "thur": "THURSDAY",
        "thurs": "THURSDAY",
@@ -213,7 +211,7 @@ def greeting(from_number):
 			message = "Aww, are you my creator? That's so sweet! Thanks for making me! You're the coolest person ever!!!"
 	else:
 		message = "Hi there!!! Don't tell anyone but you're my favorite member"
-	return message
+	return message + str(from_number)
 
 app = Flask(__name__)
 
@@ -224,7 +222,7 @@ def cottalMeals():
     from_number = request.values.get('From', None)
     query = request.values.get('Body', None)
     if query is None:
-    	query = ""
+    	query = "hey"
 
     message = ""
     
