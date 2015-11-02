@@ -22,6 +22,22 @@ def getNextMeal():
     elif hour <= 24:
         return "Dinner"
 
+# get next meal from time
+def tonightTheme():
+    # Get URL
+    url = "https://docs.google.com/spreadsheets/d/1Pfl5B3IIXv-N5emtw7NL8OdAJ_exrRyyWLrPzTnA-u8/pubhtml"
+    
+    # Fetch HTML
+    f = urllib.urlopen(url)
+    html = f.read()
+
+    # Get BeautifulSoup Object
+    soup = BeautifulSoup(html, "html.parser")
+
+    # get meal
+    correctContent = soup.find(id="0R26").nextSibling.nextSibling.getText()
+
+    return str(correctContent)
 
 # prints meal from meals dictionary input and desired meal as string
 def getMealID(day, meal):
@@ -154,6 +170,7 @@ def parse_query(query):
        "who made this app": "None other than Max Greenwald",
        "who is the prez": "More dangerous than a water buffalo, more dashing than a beluga whale, and more hotline than bling, the UCC president is none other than Forrest Hull!",
        "which club is the best": "UCC! UCC!! UCC!!!",
+       "tonight's theme": tonightTheme(),
        }
 
     #days case
@@ -220,7 +237,7 @@ def cottalMeals():
     from_number = request.values.get('From', None)
     query = request.values.get('Body', None)
     if query is None:
-    	query = "hey"
+    	query = ""
 
     message = ""
     
