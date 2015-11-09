@@ -5,14 +5,12 @@ import urllib
 from bs4 import BeautifulSoup
 import os
 from random import choice
+import random
 
 # get next meal from time
 def getNextMeal():
     hour = datetime.now().hour
     minute = datetime.now().minute
-
-    # note the five hour offset
-
     if hour <= 1:
        return "Dinner"
     if hour <= 10:
@@ -22,7 +20,33 @@ def getNextMeal():
     elif hour <= 24:
         return "Dinner"
 
-# get next meal from time
+#get Cottage Gossip
+def cottageGossip():
+    # Get URL
+    url = "https://docs.google.com/spreadsheets/d/1s41FWbDEAXKpOu0DXSWIPSvoR62YZJUz61LhLS8dfQo/pubhtml"
+    
+    # Fetch HTML
+    f = urllib.urlopen(url)
+    html = f.read()
+
+    # Get BeautifulSoup Object
+    soup = BeautifulSoup(html, "html.parser")
+
+    # chooses random gossip to share between 1 and 4
+    randomNumber = random.randint(1,4)
+    # get gossip -> hardcoded to a spreadsheet cell
+    if randomNumber == 1:
+    	correctContent = soup.find(id="0R1").nextSibling.nextSibling.getText()
+    elif randomNumber == 2:
+    	correctContent = soup.find(id="0R2").nextSibling.nextSibling.getText()
+    elif randomNumber == 3:
+    	correctContent = soup.find(id="0R3").nextSibling.nextSibling.getText()
+    else:
+    	correctContent = soup.find(id="0R4").nextSibling.nextSibling.getText()
+
+    return str(correctContent)
+
+#get tonights party theme
 def tonightTheme():
     # Get URL
     url = "https://docs.google.com/spreadsheets/d/1Pfl5B3IIXv-N5emtw7NL8OdAJ_exrRyyWLrPzTnA-u8/pubhtml"
@@ -34,12 +58,12 @@ def tonightTheme():
     # Get BeautifulSoup Object
     soup = BeautifulSoup(html, "html.parser")
 
-    # get meal
+    # get meal -> hardcoded to a spreadsheet cell
     correctContent = soup.find(id="0R26").nextSibling.nextSibling.getText()
 
     return str(correctContent)
 
-# prints meal from meals dictionary input and desired meal as string
+#finds the needed hardcoded meal cell ID
 def getMealID(day, meal):
     
     if day == "MONDAY":
@@ -114,7 +138,7 @@ def getMeals(day, meal):
 
     return str(correctContent)
 
-
+#takes a text and finds the meal, day, greeting or other from it
 def parse_query(query):
     day = ""
     meal = ""
@@ -169,8 +193,12 @@ def parse_query(query):
        "what time is it": "hour",
        "who made this app": "None other than Max Greenwald",
        "who is the prez": "More dangerous than a water buffalo, more dashing than a beluga whale, and more hotline than bling, the UCC president is none other than Forrest Hull!",
+       "who is the bees knees": "Yasmeen Almog",
+       "top club": "UCC! UCC!! UCC!!!",
+       "club motto": "an impressive melange of brilliant adventurers and well-dressed philanderers.",
        "which club is the best": "UCC! UCC!! UCC!!!",
        "tonight's theme": tonightTheme(),
+       "cottage gossip": cottageGossip(),
        }
 
     #days case
@@ -212,7 +240,7 @@ def parse_query(query):
         return[type, exception_name]
 
 
-
+#handle greeting case
 def greeting(from_number):
 	# List of known callers
 	callers = {
@@ -239,6 +267,7 @@ def cottalMeals():
     if query is None:
     	query = ""
 
+    #start of return message
     message = ""
     
     #parse query
@@ -250,15 +279,12 @@ def cottalMeals():
     elif (parsedArray[0] == "food"):       
         # pass days to getMeals and get dictionary
         content = getMeals(parsedArray[1].upper(), parsedArray[2].upper())
-        # pass dictionary and desired meal to printmeal to print
-        # print name of day and meal
         meal = parsedArray[1].upper() + " " + parsedArray[2].upper()
-        #####response = (meals["dhall"] + " " + meal + "\n")
-        # print menu
         response = meal + ": " + content + "... have a great day at Cottage!"
     else:
        response = "error"
 
+    #add our response message
     resp = twilio.twiml.Response()
     message+=response
     
