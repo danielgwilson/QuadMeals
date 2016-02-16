@@ -20,7 +20,7 @@ def getNextMeal():
     elif hour <= 24:
         return "Dinner"
 
-#get Cottage Gossip
+#get Quad Batims
 def batim():
     # Get URL
     url = "https://docs.google.com/spreadsheets/d/1UmrKlZSTr--b0x664iOUpCY1PdClNfWWExC_5RmWFNg/pubhtml"
