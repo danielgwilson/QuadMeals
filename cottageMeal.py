@@ -20,11 +20,11 @@ def getNextMeal():
     elif hour <= 24:
         return "Dinner"
 
-#get Cottage Gossip
-def cottageGossip():
+#get Quad Batims
+def batim():
     # Get URL
-    url = "https://docs.google.com/spreadsheets/d/1s41FWbDEAXKpOu0DXSWIPSvoR62YZJUz61LhLS8dfQo/pubhtml"
-    
+    url = "https://docs.google.com/spreadsheets/d/1UmrKlZSTr--b0x664iOUpCY1PdClNfWWExC_5RmWFNg/pubhtml"
+
     # Fetch HTML
     f = urllib.urlopen(url)
     html = f.read()
@@ -49,8 +49,8 @@ def cottageGossip():
 #get tonights party theme
 def tonightTheme():
     # Get URL
-    url = "https://docs.google.com/spreadsheets/d/1Pfl5B3IIXv-N5emtw7NL8OdAJ_exrRyyWLrPzTnA-u8/pubhtml"
-    
+    url = "https://docs.google.com/spreadsheets/d/1z7AqiLSM96Wqw7lLWNtJv6fylXHlwvtxcCugaGbyqHE/pubhtml"
+
     # Fetch HTML
     f = urllib.urlopen(url)
     html = f.read()
@@ -65,7 +65,7 @@ def tonightTheme():
 
 #finds the needed hardcoded meal cell ID
 def getMealID(day, meal):
-    
+
     if day == "MONDAY":
     	if meal == "BREAKFAST":
     		return "0R1"
@@ -121,8 +121,8 @@ def getMealID(day, meal):
 # parses query and gets desired meal
 def getMeals(day, meal):
     # Get URL
-    url = "https://docs.google.com/spreadsheets/d/1Pfl5B3IIXv-N5emtw7NL8OdAJ_exrRyyWLrPzTnA-u8/pubhtml"
-    
+    url = "https://docs.google.com/spreadsheets/d/1z7AqiLSM96Wqw7lLWNtJv6fylXHlwvtxcCugaGbyqHE/pubhtml"
+
     # Fetch HTML
     f = urllib.urlopen(url)
     html = f.read()
@@ -143,7 +143,7 @@ def parse_query(query):
     day = ""
     meal = ""
     query = query.lower()
-    
+
     #day dictionary
     days   = {
        "sun": "SUNDAY",
@@ -177,28 +177,29 @@ def parse_query(query):
        "afternoon": "Lunch",
        "tonight": "Dinner"
        }
-    
+
     # greetings
     greetings    = {
-       "what's up": "hi",
-       "whats up": "hi",
-       "hey": "hi",
-       "yo": "hi",
-       "sup": "hi",
-       }
+        "hi": "hi",
+        "what's up": "hi",
+        "whats up": "hi",
+        "hey": "hi",
+        "yo": "hi",
+        "sup": "hi",
+        }
 
     # exception cases
     exception_cases = {
        "what is the time": "hour",
        "what time is it": "hour",
-       "who made this app": "None other than Max Greenwald",
-       "who is the prez": "More dangerous than a water buffalo, more dashing than a beluga whale, and more hotline than bling, the UCC president is none other than Forrest Hull!",
-       "who is the bees knees": "Yasmeen Almog",
-       "top club": "UCC! UCC!! UCC!!!",
-       "club motto": "an impressive melange of brilliant adventurers and well-dressed philanderers.",
-       "which club is the best": "UCC! UCC!! UCC!!!",
+       "who made this app": "Danny copied it from his buddy Max Greenwald",
+       "who is the prez": "Katie Panties",
+       "who is the bees knees": "Artur the Innocent",
+       "top club": "FC-FC-QQQ!",
+       "club motto": "Moose heads are bae <3",
+       "which club is the best": "FC-FC-QQQ!",
        "tonight's theme": tonightTheme(),
-       "cottage gossip": cottageGossip(),
+       "batim": batim(),
        }
 
     #days case
@@ -214,7 +215,7 @@ def parse_query(query):
 
              # no specified meal - get next meal function
             if meal == "":
-                 meal = getNextMeal()       
+                 meal = getNextMeal()
             return [type, day, meal]
 
     # greeting case
@@ -232,11 +233,11 @@ def parse_query(query):
           if exception_value == "hour":
              exception_value = str(datetime.now())
           return[type, exception_value]
-         
+
     # no specified day
     if day == "":
         type = "exception"
-        exception_name = "Specify a day and meal! Example: 'tuesday dinner'"
+        exception_name = "Specify a day and meal at Quad! Example: 'wednesday dinner'"
         return[type, exception_name]
 
 
@@ -244,9 +245,7 @@ def parse_query(query):
 def greeting(from_number):
 	# List of known callers
 	callers = {
-	"+3038877689": "Max",
-	"+6099024326": "El Capitan Forrest",
-	"+7038957477": "Queen Isabelle The Goof",
+	"+8135280235": "Danny",
 	}
 
 	if from_number in callers:
@@ -259,7 +258,7 @@ def greeting(from_number):
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
-def cottalMeals():
+def quadMeals():
 
     # get from and body
     from_number = request.values.get('From', None)
@@ -269,35 +268,35 @@ def cottalMeals():
 
     #start of return message
     message = ""
-    
+
     #parse query
     parsedArray = parse_query(query)
     if (parsedArray[0] == "exception"):
         response = parsedArray[1]
     elif (parsedArray[0] == "greeting"):
         response = greeting(from_number)
-    elif (parsedArray[0] == "food"):       
+    elif (parsedArray[0] == "food"):
         # pass days to getMeals and get dictionary
         content = getMeals(parsedArray[1].upper(), parsedArray[2].upper())
         meal = parsedArray[1].upper() + " " + parsedArray[2].upper()
-        response = meal + ": " + content + "... have a great day at Cottage!"
+        response = meal + ": " + content + "... have a great day at Quad!"
     else:
        response = "error"
 
     #add our response message
     resp = twilio.twiml.Response()
     message+=response
-    
+
     #handle long message case
     if len(message) > 160:
        resp.message("(1)\n" + message[:156])
-       resp.message("(2)\n" + message[156:312])          
+       resp.message("(2)\n" + message[156:312])
        if len(message) > 312:
-          resp.message("(3)\n" + message[312:468])          
+          resp.message("(3)\n" + message[312:468])
 
     else:
        resp.message(message)
     return str(resp)
- 
+
 if __name__ == "__main__":
     app.run(debug=True)

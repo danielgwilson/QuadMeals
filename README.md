@@ -1,5 +1,8 @@
-# cottageMeals
-Python script for a Twilio connected number to find out what is for lunch at Cottage Club
+# Quad Meals
+
+Forked from Max Greenwald's implementation of cottageMeals
+
+Python script for a Twilio connected number to find out what is for lunch at Princeton Quadrangle Club
 
 This allows a person to text a number and recieve a response as specified by my Python script.
 
@@ -10,7 +13,7 @@ Steps:
 4. Upload python file to Heroku web server
 5. Boom!
 
-More specifically my Python script inteprets a message (searches for key words) and goes to a Google Spreadsheet 
+More specifically my Python script inteprets a message (searches for key words) and goes to a Google Spreadsheet
 to find an appropriate response. In this way I can update the spreadsheet any time I want and the responses will be pushed
 to the users. For example if a user types "get me Tues Lunch", my script interprets this as "TUESDAY LUNCH", it then references
 the spreadsheet and finds the cell with TUESDAY LUNCH. Maybe it is Lasagna!
