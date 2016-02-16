@@ -237,7 +237,7 @@ def parse_query(query):
     # no specified day
     if day == "":
         type = "exception"
-        exception_name = "Specify a day and meal! Example: 'tuesday dinner'"
+        exception_name = "Specify a day and meal at Quad! Example: 'wednesday dinner'"
         return[type, exception_name]
 
 
