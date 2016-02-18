@@ -200,6 +200,7 @@ def parse_query(query):
        "which club is the best": "FC-FC-QQQ!",
        "tonight's theme": tonightTheme(),
        "batim": batim(),
+       "bateem": batim(),
        }
 
     #days case
